@@ -1,14 +1,8 @@
 package com.clayton.controller;
 
-import com.clayton.model.Course;
-import com.clayton.repository.CourseRepository;
-import com.clayton.service.CourseService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clayton.model.Course;
+import com.clayton.service.CourseService;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 @Validated
 @RestController
 @RequestMapping("/api/courses")
@@ -28,9 +29,7 @@ public class CourseController {
 
   private final CourseService courseService;
 
-  public CourseController(
-    CourseService courseService
-  ) {
+  public CourseController(CourseService courseService) {
     this.courseService = courseService;
   }
 
@@ -41,13 +40,8 @@ public class CourseController {
 
   // listando o curso por id
   @GetMapping("/{id}")
-  public ResponseEntity<Course> findById(
-    @PathVariable @NotNull @Positive Long id
-  ) {
-    return courseService
-      .findById(id)
-      .map(recordFound -> ResponseEntity.ok().body(recordFound))
-      .orElse(ResponseEntity.notFound().build());
+  public Course findById(@PathVariable @NotNull @Positive Long id) {
+    return courseService.findById(id);
   }
 
   //@RequestMapping(method = RequestMethod.POST)
@@ -61,21 +55,16 @@ public class CourseController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Course> update(
+  public Course update(
     @PathVariable @NotNull @Positive Long id,
     @RequestBody @Valid Course course
   ) {
-    return courseService
-      .update(id, course)
-      .map(recordFound -> ResponseEntity.ok().body(recordFound))
-      .orElse(ResponseEntity.notFound().build());
+    return courseService.update(id, course);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
-    if (courseService.delete(id)) {
-      return ResponseEntity.noContent().<Void>build();
-    }
-    return ResponseEntity.notFound().build();
+  @ResponseStatus(code = HttpStatus.NO_CONTENT)
+  public void delete(@PathVariable @NotNull @Positive Long id) {
+    courseService.delete(id);
   }
 }
