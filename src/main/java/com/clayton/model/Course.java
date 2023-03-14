@@ -1,7 +1,10 @@
 package com.clayton.model;
 
+import com.clayton.enums.Category;
+import com.clayton.enums.converters.CategoryConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,10 +35,9 @@ public class Course {
   private String name;
 
   @NotNull
-  @Length(max = 10)
-  @Pattern(regexp = "Back-end|Front-end")
   @Column(length = 10, nullable = false)
-  private String category;
+  @Convert(converter = CategoryConverter.class)
+  private Category category;
 
   // nova coluna para conter o historico de Soft delete
   @NotNull

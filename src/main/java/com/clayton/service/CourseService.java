@@ -2,6 +2,7 @@ package com.clayton.service;
 
 import com.clayton.dto.CourseDTO;
 import com.clayton.dto.mapper.CourseMapper;
+import com.clayton.enums.Category;
 import com.clayton.exception.RecordNotFoundException;
 import com.clayton.repository.CourseRepository;
 import jakarta.validation.Valid;
@@ -55,7 +56,7 @@ public class CourseService {
       .findById(id)
       .map(recordFound -> {
         recordFound.setName(course.name());
-        recordFound.setCategory(course.category());
+        recordFound.setCategory(Category.FRONT_END);
         return courseMapper.toDTO(courseRepository.save(recordFound));
       })
       .orElseThrow(() -> new RecordNotFoundException(id));

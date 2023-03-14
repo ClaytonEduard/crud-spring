@@ -1,6 +1,7 @@
 package com.clayton.dto.mapper;
 
 import com.clayton.dto.CourseDTO;
+import com.clayton.enums.Category;
 import com.clayton.model.Course;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +13,7 @@ public class CourseMapper {
     if (course == null) {
       return null;
     }
-    return new CourseDTO(
-      course.getId(),
-      course.getName(),
-      course.getCategory()
-    );
+    return new CourseDTO(course.getId(), course.getName(), "Front-end");
   }
 
   //transformar curso em cursoDto
@@ -30,7 +27,7 @@ public class CourseMapper {
       course.setId(courseDTO.id());
     }
     course.setName(courseDTO.name());
-    course.setCategory(courseDTO.category());
+    course.setCategory(Category.FRONT_END);
     course.setStatus("Ativo");
     return course;
   }
