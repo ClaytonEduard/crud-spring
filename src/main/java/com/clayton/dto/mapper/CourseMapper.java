@@ -13,7 +13,11 @@ public class CourseMapper {
     if (course == null) {
       return null;
     }
-    return new CourseDTO(course.getId(), course.getName(), "Front-end");
+    return new CourseDTO(
+      course.getId(),
+      course.getName(),
+      course.getCategory().getValue()
+    );
   }
 
   //transformar curso em cursoDto
@@ -27,8 +31,23 @@ public class CourseMapper {
       course.setId(courseDTO.id());
     }
     course.setName(courseDTO.name());
-    course.setCategory(Category.FRONT_END);
-    course.setStatus("Ativo");
+    //TODO: use o mapper for Category
+    course.setCategory(convertCategoryValue(courseDTO.category()));
     return course;
+  }
+
+  // metod convert for Category
+  public Category convertCategoryValue(String value) {
+    if (value == null) {
+      return null;
+    }
+    //expressão switch parecido com o switch case do java
+    return switch (value) {
+      case "Front-end" -> Category.FRONT_END;
+      case "Back-end" -> Category.BACK_END;
+      default -> throw new IllegalArgumentException(
+        "Categoria inválida: " + value
+      );
+    };
   }
 }

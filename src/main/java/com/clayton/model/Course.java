@@ -1,8 +1,15 @@
 package com.clayton.model;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.Length;
+
 import com.clayton.enums.Category;
+import com.clayton.enums.Status;
 import com.clayton.enums.converters.CategoryConverter;
+import com.clayton.enums.converters.StatusConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -11,11 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 @Entity
@@ -41,8 +44,7 @@ public class Course {
 
   // nova coluna para conter o historico de Soft delete
   @NotNull
-  @Length(max = 10)
-  @Pattern(regexp = "Ativo|Inativo")
   @Column(length = 10, nullable = false)
-  private String status = "Ativo"; // sempre que criar um novo ja virar Ativo
+  @Convert(converter = StatusConverter.class)
+  private Status status = Status.ACTIVE; // sempre que criar um novo ja virar Ativo
 }
