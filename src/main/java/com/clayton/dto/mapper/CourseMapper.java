@@ -4,6 +4,7 @@ import com.clayton.dto.CourseDTO;
 import com.clayton.dto.LessonDTO;
 import com.clayton.enums.Category;
 import com.clayton.model.Course;
+import com.clayton.model.Lesson;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +42,16 @@ public class CourseMapper {
     }
     course.setName(courseDTO.name());
     course.setCategory(convertCategoryValue(courseDTO.category()));
+
+    List<Lesson> lessons = courseDTO.lessons().stream().map(lessonDTO -> {
+      var lesson = new Lesson();
+      lesson.setId(lessonDTO.id());
+      lesson.setName(lessonDTO.name());
+      lesson.setYoutubeUrl(lessonDTO.youtubeUrl());
+      lesson.setCourse(course);
+      return lesson;
+    }).collect(Collectors.toList());
+    course.setLessons(lessons);
     return course;
   }
 

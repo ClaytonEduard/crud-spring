@@ -43,21 +43,20 @@ public class CourseController {
     return courseService.findById(id);
   }
 
-  //@RequestMapping(method = RequestMethod.POST)
+  // @RequestMapping(method = RequestMethod.POST)
   @PostMapping
   @ResponseStatus(code = HttpStatus.CREATED) // somente para retornar o status 201
   public CourseDTO create(@RequestBody @Valid @NotNull CourseDTO course) {
     return courseService.create(course);
-    //return ResponseEntity
-    //  .status(HttpStatus.CREATED)
-    //  .body(courseRepository.save(course)); // somente para retornar o status 201
+    // return ResponseEntity
+    // .status(HttpStatus.CREATED)
+    // .body(courseRepository.save(course)); // somente para retornar o status 201
   }
 
   @PutMapping("/{id}")
   public CourseDTO update(
-    @PathVariable @NotNull @Positive Long id,
-    @RequestBody @Valid @NotNull CourseDTO course
-  ) {
+      @PathVariable @NotNull @Positive Long id,
+      @RequestBody @Valid @NotNull CourseDTO course) {
     return courseService.update(id, course);
   }
 
